@@ -1,26 +1,46 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include "map.h"
+
+using namespace std;
+
 
 int main() {
-    // Creamos la ventana del juego
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Juego Dungeon - Test SFML");
+	// 1. Creamos la ventana del juego con SFML
+	// Creamos una ventana de 800x600 píxeles con el título "Dungeon Crawler - UTN"
+	sf::RenderWindow ventana(sf::VideoMode(960, 640), "Dungeon Crawler - UTN");
+	ventana.setFramerateLimit(60); // Limitamos a 60 FPS para que el juego no consuma recursos innecesarios
 
-    // Creamos un circulo verde para probar los graficos
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-    shape.setPosition(300.f, 200.f);
+	// 2. Creamos el mapa del juego
+	Map mapa(16, 2.0f); // Creamos un objeto de la clase Map con tiles de 16x16 píxeles escalados al doble (32x32)
 
-    // Bucle principal del juego
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+	// Intentamos cargar el mapa desde un archivo CSV y su correspondiente imagen de tileset
+	if (!mapa.cargarMapa("assets/mapa_v1.csv", "assets/Dungeon_Tileset.png")) {
+		cout << "No se pudo cargar el mapa. Cerrando el juego." << endl;
+		return -1; // Salimos del programa con un código de error
+	}
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+	// 3 . Bucle principal del juego
+	while (ventana.isOpen()) {
 
-    return 0;
-}
+		// --- PARTE A: PROCESAR EVENTOS (Teclado, mouse, cerrar ventana) ---
+		sf::Event evento;
+		while (ventana.pollEvent(evento)) {
+			// Si el jugador toca la "X" de la ventana, la cerramos
+			if (evento.type == sf::Event::Closed) {
+				ventana.close();
+			}
+		}
+		// --- PARTE B: ACTUALIZAR LÓGICA (Acá irá el movimiento del personaje más adelante) ---
+
+		// --- PARTE C: DIBUJAR TODO EN PANTALLA ---
+		ventana.clear(sf::Color(30, 30, 30)); // Limpiamos el fotograma anterior con un fondo gris oscuro
+
+		mapa.dibujarMapa(ventana); // ¡PUM! Llamamos a tu pintor para que estampe la mazmorra
+
+		ventana.display(); // Mostramos el resultado final en la pantalla del jugador
+	}
+
+	return 0; // Si salimos del bucle, el juego termina limpiamente
+} // Fin del main
+
