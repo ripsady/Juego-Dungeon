@@ -1,6 +1,8 @@
-#include <SFML/Graphics.hpp>
+/*
+	#include <SFML/Graphics.hpp>
 #include <iostream>
 #include "map.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -44,3 +46,104 @@ int main() {
 	return 0; // Si salimos del bucle, el juego termina limpiamente
 } // Fin del main
 
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include "map.h"
+#include "menu.h"
+
+using namespace std;
+
+enum GameState {
+    MENU,
+    JUGANDO
+};
+
+int main() {
+    sf::RenderWindow ventana(sf::VideoMode(960, 640), "Dungeon Crawler - UTN");
+    ventana.setFramerateLimit(60);
+
+    // 🔹 Crear menú
+    Menu menu(960, 640);
+
+    // 🔹 Estado inicial
+    GameState estado = MENU;
+
+    // 🔹 Crear mapa
+    Map mapa(16, 2.0f);
+
+    if (!mapa.cargarMapa("assets/mapa_v1.csv", "assets/Dungeon_Tileset.png")) {
+        cout << "No se pudo cargar el mapa. Cerrando el juego." << endl;
+        return -1;
+    }
+
+    while (ventana.isOpen()) {
+        sf::Event evento;
+
+        while (ventana.pollEvent(evento)) {
+            if (evento.type == sf::Event::Closed)
+                ventana.close();
+
+            // =========================
+            // 🎮 INPUT SEGÚN ESTADO
+            // =========================
+
+            if (estado == MENU) {
+                if (evento.type == sf::Event::KeyPressed) {
+
+                    if (evento.key.code == sf::Keyboard::Up)
+                        menu.moveUp();
+
+                    if (evento.key.code == sf::Keyboard::Down)
+                        menu.moveDown();
+
+                    if (evento.key.code == sf::Keyboard::Enter) {
+                        int selected = menu.getSelectedIndex();
+
+                        if (selected == 0) {
+                            estado = JUGANDO; // 👉 Entrás al juego
+                        }
+
+                        if (selected == 4) {
+                            ventana.close();
+                        }
+                    }
+                }
+            }
+
+            else if (estado == JUGANDO) {
+                // 👉 Acá después vas a manejar movimiento del player
+            }
+        }
+
+        // =========================
+        // 🎨 RENDER SEGÚN ESTADO
+        // =========================
+
+        ventana.clear(sf::Color(30, 30, 30));
+
+        if (estado == MENU) {
+            menu.draw(ventana);
+        }
+        else if (estado == JUGANDO) {
+            mapa.dibujarMapa(ventana);
+        }
+
+        ventana.display();
+    }
+
+    return 0;
+}
