@@ -159,10 +159,22 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="skills.cpp" />
+    <ClCompile Include="skill_1.cpp" />
+    <ClCompile Include="skill_2.cpp" />
+    <ClCompile Include="skill_3.cpp" />
+    <ClCompile Include="skill_4.cpp" />
+    <ClCompile Include="skill_5.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="skills.h" />
+    <ClInclude Include="skill_1.h" />
+    <ClInclude Include="skill_2.h" />
+    <ClInclude Include="skill_3.h" />
+    <ClInclude Include="skill_4.h" />
+    <ClInclude Include="skill_5.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
