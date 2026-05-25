@@ -1,46 +1,49 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include "map.h"
-
-using namespace std;
-
+#include "Personaje.h"
+#include "Mascota.h"
 
 int main() {
-	// 1. Creamos la ventana del juego con SFML
-	// Creamos una ventana de 800x600 píxeles con el título "Dungeon Crawler - UTN"
-	sf::RenderWindow ventana(sf::VideoMode(960, 640), "Dungeon Crawler - UTN");
-	ventana.setFramerateLimit(60); // Limitamos a 60 FPS para que el juego no consuma recursos innecesarios
+    // Crea la ventana donde se va a dibujar el juego
+    sf::RenderWindow ventana(sf::VideoMode(800, 600), "Juego Dungeon");
 
-	// 2. Creamos el mapa del juego
-	Map mapa(16, 2.0f); // Creamos un objeto de la clase Map con tiles de 16x16 píxeles escalados al doble (32x32)
+    // Limita a 60 frames por segundo para que el movimiento del personaje sea consistente y no salga disparado
+    ventana.setFramerateLimit(60);
 
-	// Intentamos cargar el mapa desde un archivo CSV y su correspondiente imagen de tileset
-	if (!mapa.cargarMapa("assets/mapa_v1.csv", "assets/Dungeon_Tileset.png")) {
-		cout << "No se pudo cargar el mapa. Cerrando el juego." << endl;
-		return -1; // Salimos del programa con un código de error
-	}
+    // Crea el objeto personaje (llama automáticamente al constructor de Personaje)
+    Personaje personaje;
 
-	// 3 . Bucle principal del juego
-	while (ventana.isOpen()) {
+    // Crea el objeto mascota (llama automáticamente al constructor de Mascota)
+    Mascota mascota;
 
-		// --- PARTE A: PROCESAR EVENTOS (Teclado, mouse, cerrar ventana) ---
-		sf::Event evento;
-		while (ventana.pollEvent(evento)) {
-			// Si el jugador toca la "X" de la ventana, la cerramos
-			if (evento.type == sf::Event::Closed) {
-				ventana.close();
-			}
-		}
-		// --- PARTE B: ACTUALIZAR LÓGICA (Acá irá el movimiento del personaje más adelante) ---
+    // Bucle principal: se repite 60 veces por segundo mientras la ventana esté abierta
+    while (ventana.isOpen()) {
+        sf::Event evento;
 
-		// --- PARTE C: DIBUJAR TODO EN PANTALLA ---
-		ventana.clear(sf::Color(30, 30, 30)); // Limpiamos el fotograma anterior con un fondo gris oscuro
+        // Revisa si ocurrió algún evento (tecla, mouse, cerrar ventana, etc.)
+        while (ventana.pollEvent(evento)) {
+            // Si el jugador cierra la ventana, termina el bucle
+            if (evento.type == sf::Event::Closed)
+                ventana.close();
+        }
+     
+        // Lee el teclado y mueve el personaje según la tecla presionada
+        personaje.manejarInput();
 
-		mapa.dibujarMapa(ventana); // ¡PUM! Llamamos a tu pintor para que estampe la mazmorra
+        // Calcula y actualiza la posición de la mascota para que siga al personaje
+        mascota.seguir(personaje.getPosicion());
 
-		ventana.display(); // Mostramos el resultado final en la pantalla del jugador
-	}
+        // Borra lo dibujado en el frame anterior para empezar limpio
+        ventana.clear();
 
-	return 0; // Si salimos del bucle, el juego termina limpiamente
-} // Fin del main
+        // Dibuja el personaje en su posición actual
+        personaje.dibujar(ventana);
 
+        // Dibuja la mascota en su posición actual
+        mascota.dibujar(ventana);
+
+        // Muestra en pantalla todo lo que se dibujó en este frame
+        ventana.display();
+    }
+
+    return 0;
+}
