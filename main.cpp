@@ -1,65 +1,3 @@
-/*
-	#include <SFML/Graphics.hpp>
-#include <iostream>
-#include "map.h"
-#include "menu.h"
-
-using namespace std;
-
-
-int main() {
-	// 1. Creamos la ventana del juego con SFML
-	// Creamos una ventana de 800x600 píxeles con el título "Dungeon Crawler - UTN"
-	sf::RenderWindow ventana(sf::VideoMode(960, 640), "Dungeon Crawler - UTN");
-	ventana.setFramerateLimit(60); // Limitamos a 60 FPS para que el juego no consuma recursos innecesarios
-
-	// 2. Creamos el mapa del juego
-	Map mapa(16, 2.0f); // Creamos un objeto de la clase Map con tiles de 16x16 píxeles escalados al doble (32x32)
-
-	// Intentamos cargar el mapa desde un archivo CSV y su correspondiente imagen de tileset
-	if (!mapa.cargarMapa("assets/mapa_v1.csv", "assets/Dungeon_Tileset.png")) {
-		cout << "No se pudo cargar el mapa. Cerrando el juego." << endl;
-		return -1; // Salimos del programa con un código de error
-	}
-
-	// 3 . Bucle principal del juego
-	while (ventana.isOpen()) {
-
-		// --- PARTE A: PROCESAR EVENTOS (Teclado, mouse, cerrar ventana) ---
-		sf::Event evento;
-		while (ventana.pollEvent(evento)) {
-			// Si el jugador toca la "X" de la ventana, la cerramos
-			if (evento.type == sf::Event::Closed) {
-				ventana.close();
-			}
-		}
-		// --- PARTE B: ACTUALIZAR LÓGICA (Acá irá el movimiento del personaje más adelante) ---
-
-		// --- PARTE C: DIBUJAR TODO EN PANTALLA ---
-		ventana.clear(sf::Color(30, 30, 30)); // Limpiamos el fotograma anterior con un fondo gris oscuro
-
-		mapa.dibujarMapa(ventana); // ¡PUM! Llamamos a tu pintor para que estampe la mazmorra
-
-		ventana.display(); // Mostramos el resultado final en la pantalla del jugador
-	}
-
-	return 0; // Si salimos del bucle, el juego termina limpiamente
-} // Fin del main
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "map.h"
@@ -67,65 +5,82 @@ int main() {
 
 using namespace std;
 
+// =========================================
+// MÁQUINA DE ESTADOS
+// Define en qué pantalla se encuentra el juego
+// =========================================
 enum GameState {
     MENU,
     JUGANDO
 };
 
 int main() {
-    sf::RenderWindow ventana(sf::VideoMode(960, 640), "Dungeon Crawler - UTN");
-    ventana.setFramerateLimit(60);
+    // =========================================
+    // 1. INICIALIZACIÓN DE VENTANA Y ESTADO
+    // =========================================
+    sf::RenderWindow ventana(sf::VideoMode(960, 640), "Daetherial - UTN");
+    ventana.setFramerateLimit(60); // Limitamos a 60 FPS por rendimiento
 
-    // 🔹 Crear menú
-    Menu menu(960, 640);
-
-    // 🔹 Estado inicial
+    // El juego arranca siempre en el menú principal
     GameState estado = MENU;
 
-    // 🔹 Crear mapa
+    // =========================================
+    // 2. CREACIÓN DE OBJETOS (Menú y Mapa)
+    // =========================================
+    Menu menu(960, 640);
+
+    // OJO: Tu compañero dejó (16, 2.0f). Acordate que para tu mapa va (32, 1.0f)
     Map mapa(16, 2.0f);
 
+    // OJO: Acordate de cambiar "Dungeon_Tileset.png" por tu fondo gigante
     if (!mapa.cargarMapa("assets/mapa_v1.csv", "assets/Dungeon_Tileset.png")) {
         cout << "No se pudo cargar el mapa. Cerrando el juego." << endl;
         return -1;
     }
 
+    // =========================================
+    // 3. BUCLE PRINCIPAL DEL JUEGO
+    // =========================================
     while (ventana.isOpen()) {
         sf::Event evento;
 
+        // --- PROCESAMIENTO DE EVENTOS ---
         while (ventana.pollEvent(evento)) {
-            if (evento.type == sf::Event::Closed)
+
+            // Si el jugador toca la "X" de la ventana, cerramos
+            if (evento.type == sf::Event::Closed) {
                 ventana.close();
+            }
 
             // =========================
             // 🎮 INPUT SEGÚN ESTADO
             // =========================
-
             if (estado == MENU) {
                 if (evento.type == sf::Event::KeyPressed) {
 
-                    if (evento.key.code == sf::Keyboard::Up)
+                    // Navegación por las opciones del menú
+                    if (evento.key.code == sf::Keyboard::Up) {
                         menu.moveUp();
-
-                    if (evento.key.code == sf::Keyboard::Down)
+                    }
+                    if (evento.key.code == sf::Keyboard::Down) {
                         menu.moveDown();
+                    }
 
+                    // Selección de opción con Enter
                     if (evento.key.code == sf::Keyboard::Enter) {
                         int selected = menu.getSelectedIndex();
 
                         if (selected == 0) {
-                            estado = JUGANDO; // 👉 Entrás al juego
+                            estado = JUGANDO; // 👉 Transición: Entrás al juego
                         }
-
                         if (selected == 4) {
-                            ventana.close();
+                            ventana.close();  // 👉 Salir del juego
                         }
                     }
                 }
             }
-
             else if (estado == JUGANDO) {
-                // 👉 Acá después vas a manejar movimiento del player
+                // 👉 Acá después vas a manejar el input de movimiento del player
             }
         }
 
@@ -133,17 +88,20 @@ int main() {
         // 🎨 RENDER SEGÚN ESTADO
         // =========================
 
+        // Limpiamos el fotograma anterior con un fondo gris oscuro
         ventana.clear(sf::Color(30, 30, 30));
 
         if (estado == MENU) {
-            menu.draw(ventana);
+            menu.draw(ventana); // Dibuja la interfaz del menú principal
         }
         else if (estado == JUGANDO) {
-            mapa.dibujarMapa(ventana);
+            mapa.dibujarMapa(ventana); // Dibuja la mazmorra / cripta
+            // 👉 Acá vas a dibujar al personaje principal y la mascota
         }
 
+        // Mostramos el resultado final en la pantalla
         ventana.display();
     }
 
-    return 0;
+    return 0; // Fin del main
 }
