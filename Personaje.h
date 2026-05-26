@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "map.h"
 
 // Clase que representa al personaje controlado por el jugador
 class Personaje {
@@ -15,8 +16,9 @@ public:
     // Constructor: se ejecuta automáticamente al crear el objeto Personaje
     Personaje();
 
-    // Lee el teclado y mueve el personaje según la tecla presionada
-    void manejarInput();
+    //FEDE AGREGO ESTAS FUNCIONES PARA QUE EL PERSONAJE PUEDA COMUNICARSE CON EL MAPA Y POR LO TANTO PUEDA COLISIONAR
+    // 🛡️ El personaje ahora recibe el mapa por referencia para poder colisionar ("NO es NO")
+    void manejarInput(Map& mapa);
 
     // Devuelve las coordenadas X e Y actuales del personaje
     sf::Vector2f getPosicion();

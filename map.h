@@ -20,13 +20,18 @@ private:
 
 public:
 //Metodos públicos del mapa
-Map(int tamTile = 16, float escala = 2.0f); //constructor del mapa con sus valores iniciales
+Map(int tamTile = 32, float escala = 1.0f); //constructor del mapa con sus valores iniciales
 
 // Cargar el mapa desde un archivo CSV devuelve true si se cargo correctamente, false si hubo un error
 bool cargarMapa(const string& csvPath, const string& texturaPath);
 
+// Funcion para las colisiones "NO es NO"
+bool hayColision(float x, float y);
+
 //Funcion para dibujar el mapa en la ventana
 
 void dibujarMapa(sf::RenderWindow& ventana);
+
+void dibujarDebug(sf::RenderWindow& ventana);
 
 };

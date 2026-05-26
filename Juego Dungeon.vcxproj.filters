@@ -80,5 +80,13 @@
     <ClInclude Include="Personaje.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="sonic2.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+>>>>>>> 12c9b4d1ab8eb5d0fe6be29fc5244d22a407ddc1
   </ItemGroup>
 </Project>

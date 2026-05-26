@@ -35,14 +35,17 @@ int main() {
     // Crea el menú principal con el ancho y alto de la ventana
     Menu menu(960, 640);
 
-    // Crea el mapa con tamaño de tile 16 píxeles y escala 2 (se verá el doble de grande)
-    Map mapa(16, 2.0f);
+    // Crea el mapa con tamaño de tile 32 píxeles y escala 1 (se verá el doble de grande)
+    Map mapa(16, 1.0f);
 
     // Carga el mapa y verifica si cargó correctamente
-    if (!mapa.cargarMapa("assets/mapa_v1.csv", "assets/Dungeon_Tileset.png")) {
+    if (!mapa.cargarMapa("assets/collisions_mapa_v1_background.csv", "assets/mapa_v1_background.png")) {
         cout << "No se pudo cargar el mapa. Cerrando el juego." << endl;
         return -1;
     }
+
+    // 🎥 CREACIÓN DE LA CÁMARA: Un "lente" del tamaño de nuestra ventana
+    sf::View camara(sf::FloatRect(0.f, 0.f, 960.f, 640.f));
 
     // Crea el objeto personaje (llama automáticamente al constructor de Personaje)
     Personaje personaje;
@@ -186,8 +189,11 @@ int main() {
         // LÓGICA SEGÚN ESTADO
         // =========================
         if (estado == JUGANDO) {
+            // 🎥 Mueve la cámara para que el personaje siempre esté en el centro
+            camara.setCenter(personaje.getPosicion());
+
             // Lee el teclado y mueve el personaje según la tecla presionada
-            personaje.manejarInput();
+            personaje.manejarInput(mapa);
 
             // La mascota sigue automáticamente al personaje
             mascota.seguir(personaje.getPosicion());
@@ -201,12 +207,22 @@ int main() {
         ventana.clear(sf::Color(30, 30, 30));
 
         if (estado == MENU) {
+            // 🚨 ANCLAJE DE INTERFAZ: Usamos la vista estática original para que el menú no se mueva
+            ventana.setView(ventana.getDefaultView());
+
             // Dibuja la interfaz del menú principal
             menu.draw(ventana);
         }
         else if (estado == JUGANDO) {
+            // 🎥 APLICAMOS LA CÁMARA: Todo lo que se dibuje de acá en adelante se ve por el lente
+            ventana.setView(camara);
+
             // Dibuja el mapa primero para que quede detrás del personaje
             mapa.dibujarMapa(ventana);
+
+            // DEBUG! Dibuja la capa de colisión encima del mapa
+            // Esto te permite ver si los cuadros rojos coinciden con las paredes reales
+            mapa.dibujarDebug(ventana);
 
             // Dibuja el personaje encima del mapa
             personaje.dibujar(ventana);

@@ -1,7 +1,7 @@
 #include "menu.h" // Incluye la definición de la clase Menu (archivo .h correspondiente)
 
 Menu::Menu(float width, float height) { // Constructor del menú, recibe el ancho y alto de la ventana
-    font.loadFromFile("assets/ariali.ttf");
+    font.loadFromFile("assets/NorthEternal-yYl4V.otf");
     // Carga la fuente desde el archivo especificado (necesaria para mostrar texto)
 
     std::string items[] = {
