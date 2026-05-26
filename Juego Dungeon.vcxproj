@@ -78,10 +78,6 @@
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(ProjectDir)dependencias\SFML\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\fedew\Desktop\CURSANDO\Resumen de la Carrera\Prog 2\PROYECTO %28JUEGO%29\JUEGO_DUNGEON\_juego_dungeon_repo\Juego-Dungeon\dependencias\SFML-2.5.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\fedew\Desktop\CURSANDO\Resumen de la Carrera\Prog 2\PROYECTO %28JUEGO%29\JUEGO_DUNGEON\_juego_dungeon_repo\Juego-Dungeon\dependencias\SFML-2.5.1\lib;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -89,13 +85,13 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencias\SFML\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML\include;$(ProjectDir)dependencias\SFML\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib;sfml-network.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)dependencias\SFML\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\User\OneDrive\Escritorio\Juego-Dungeon\SFML\lib;$(ProjectDir)dependencias\SFML\lib</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -129,11 +125,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>.\SFML\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-window-d.lib;sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\User\OneDrive\Escritorio\Juego-Dungeon\SFML\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -159,12 +157,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mascota.cpp" />
-    <ClCompile Include="Personaje.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="skills.cpp" />
+    <ClCompile Include="skill_1.cpp" />
+    <ClCompile Include="skill_2.cpp" />
+    <ClCompile Include="skill_3.cpp" />
+    <ClCompile Include="skill_4.cpp" />
+    <ClCompile Include="skill_5.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mascota.h" />
-    <ClInclude Include="Personaje.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="skills.h" />
+    <ClInclude Include="skill_1.h" />
+    <ClInclude Include="skill_2.h" />
+    <ClInclude Include="skill_3.h" />
+    <ClInclude Include="skill_4.h" />
+    <ClInclude Include="skill_5.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

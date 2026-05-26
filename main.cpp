@@ -1,49 +1,107 @@
 #include <SFML/Graphics.hpp>
-#include "Personaje.h"
-#include "Mascota.h"
+#include <iostream>
+#include "map.h"
+#include "menu.h"
+
+using namespace std;
+
+// =========================================
+// MÁQUINA DE ESTADOS
+// Define en qué pantalla se encuentra el juego
+// =========================================
+enum GameState {
+    MENU,
+    JUGANDO
+};
 
 int main() {
-    // Crea la ventana donde se va a dibujar el juego
-    sf::RenderWindow ventana(sf::VideoMode(800, 600), "Juego Dungeon");
+    // =========================================
+    // 1. INICIALIZACIÓN DE VENTANA Y ESTADO
+    // =========================================
+    sf::RenderWindow ventana(sf::VideoMode(960, 640), "Daetherial - UTN");
+    ventana.setFramerateLimit(60); // Limitamos a 60 FPS por rendimiento
 
-    // Limita a 60 frames por segundo para que el movimiento del personaje sea consistente y no salga disparado
-    ventana.setFramerateLimit(60);
+    // El juego arranca siempre en el menú principal
+    GameState estado = MENU;
 
-    // Crea el objeto personaje (llama automáticamente al constructor de Personaje)
-    Personaje personaje;
+    // =========================================
+    // 2. CREACIÓN DE OBJETOS (Menú y Mapa)
+    // =========================================
+    Menu menu(960, 640);
 
-    // Crea el objeto mascota (llama automáticamente al constructor de Mascota)
-    Mascota mascota;
+    // OJO: Tu compañero dejó (16, 2.0f). Acordate que para tu mapa va (32, 1.0f)
+    Map mapa(16, 2.0f);
 
-    // Bucle principal: se repite 60 veces por segundo mientras la ventana esté abierta
+    // OJO: Acordate de cambiar "Dungeon_Tileset.png" por tu fondo gigante
+    if (!mapa.cargarMapa("assets/mapa_v1.csv", "assets/Dungeon_Tileset.png")) {
+        cout << "No se pudo cargar el mapa. Cerrando el juego." << endl;
+        return -1;
+    }
+
+    // =========================================
+    // 3. BUCLE PRINCIPAL DEL JUEGO
+    // =========================================
     while (ventana.isOpen()) {
         sf::Event evento;
 
-        // Revisa si ocurrió algún evento (tecla, mouse, cerrar ventana, etc.)
+        // --- PROCESAMIENTO DE EVENTOS ---
         while (ventana.pollEvent(evento)) {
-            // Si el jugador cierra la ventana, termina el bucle
-            if (evento.type == sf::Event::Closed)
+
+            // Si el jugador toca la "X" de la ventana, cerramos
+            if (evento.type == sf::Event::Closed) {
                 ventana.close();
+            }
+
+            // =========================
+            // 🎮 INPUT SEGÚN ESTADO
+            // =========================
+            if (estado == MENU) {
+                if (evento.type == sf::Event::KeyPressed) {
+
+                    // Navegación por las opciones del menú
+                    if (evento.key.code == sf::Keyboard::Up) {
+                        menu.moveUp();
+                    }
+                    if (evento.key.code == sf::Keyboard::Down) {
+                        menu.moveDown();
+                    }
+
+                    // Selección de opción con Enter
+                    if (evento.key.code == sf::Keyboard::Enter) {
+                        int selected = menu.getSelectedIndex();
+
+                        if (selected == 0) {
+                            estado = JUGANDO; // 👉 Transición: Entrás al juego
+                        }
+                        if (selected == 4) {
+                            ventana.close();  // 👉 Salir del juego
+                        }
+                    }
+                }
+            }
+            else if (estado == JUGANDO) {
+                // 👉 Acá después vas a manejar el input de movimiento del player
+            }
         }
-     
-        // Lee el teclado y mueve el personaje según la tecla presionada
-        personaje.manejarInput();
 
-        // Calcula y actualiza la posición de la mascota para que siga al personaje
-        mascota.seguir(personaje.getPosicion());
+        // =========================
+        // 🎨 RENDER SEGÚN ESTADO
+        // =========================
 
-        // Borra lo dibujado en el frame anterior para empezar limpio
-        ventana.clear();
+        // Limpiamos el fotograma anterior con un fondo gris oscuro
+        ventana.clear(sf::Color(30, 30, 30));
 
-        // Dibuja el personaje en su posición actual
-        personaje.dibujar(ventana);
+        if (estado == MENU) {
+            menu.draw(ventana); // Dibuja la interfaz del menú principal
+        }
+        else if (estado == JUGANDO) {
+            mapa.dibujarMapa(ventana); // Dibuja la mazmorra / cripta
+            // 👉 Acá vas a dibujar al personaje principal y la mascota
+        }
 
-        // Dibuja la mascota en su posición actual
-        mascota.dibujar(ventana);
-
-        // Muestra en pantalla todo lo que se dibujó en este frame
+        // Mostramos el resultado final en la pantalla
         ventana.display();
     }
 
-    return 0;
+    return 0; // Fin del main
 }
