@@ -37,7 +37,7 @@ Personaje::Personaje() {
     sprite_del_personaje.setPosition(100.f, 100.f);
 
     // Define cuántos píxeles avanza el personaje por cada frame
-    velocidad = 1.f;
+    velocidad = 2.f;
 }
 
 // Lee las teclas W, A, S, D, cambia la textura según la dirección y mueve el personaje
@@ -53,7 +53,8 @@ void Personaje::manejarInput(Map& mapa) {
     // Offset Y: 48. Esto posiciona la caja en la parte inferior (pies)
 
     float hitBoxX = posActual.x + 24.f;
-    float hitBoxY = posActual.y + 48.f;
+    float hitBoxY = posActual.y + 24.f;
+
 
     // W - Arriba
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {

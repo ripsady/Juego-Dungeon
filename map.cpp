@@ -154,8 +154,8 @@ bool Map::hayColision(float x, float y) {
 	// 1. EL TRADUCTOR DE COORDENADAS: Convertimos los píxeles reales de la pantalla (donde está parado el personaje)
 		// a las posiciones de las cajas (filas y columnas) de nuestro depósito de memoria.
 		// Como cada tile en la ventana se dibuja estirado por la escala, dividimos la posición por (_tamTile * _escala).
-	int columna = x / (_tamTile * _escala);
-	int fila = y / (_tamTile * _escala);
+	float columna = x / (_tamTile * _escala);
+	float fila = y / (_tamTile * _escala);
 
 	// 2. CONTROL DE FRONTERAS: Si el jugador intenta caminar hacia coordenadas negativas o se pasa del tamaño
 	// máximo de los estantes de nuestro depósito, el seguridad lo frena en seco para que no se caiga al vacío del fin del mundo.
