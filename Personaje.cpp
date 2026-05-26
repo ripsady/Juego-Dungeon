@@ -41,61 +41,53 @@ Personaje::Personaje() {
 }
 
 // Lee las teclas W, A, S, D, cambia la textura según la dirección y mueve el personaje
-void Personaje::manejarInput() {
+void Personaje::manejarInput(Map& mapa) {
 
-    // W mueve hacia arriba y cambia la textura para que mire hacia arriba
+    // 1. Obtenemos la posición actual
+    sf::Vector2f posActual = sprite_del_personaje.getPosition();
+
+    // 2. NUEVA LÓGICA DE HITBOX (16x16)
+    // Centramos la caja de 16px en la base del personaje (donde están los pies)
+    // Asumimos que el personaje visual está en (posActual.x, posActual.y)
+    // Offset X: (64 - 16) / 2 = 24. Esto centra la caja de 16px en el ancho del sprite de 64px
+    // Offset Y: 48. Esto posiciona la caja en la parte inferior (pies)
+
+    float hitBoxX = posActual.x + 24.f;
+    float hitBoxY = posActual.y + 48.f;
+
+    // W - Arriba
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        sprite_del_personaje.move(0, -velocidad);
-        // Cambia la imagen del sprite a la textura de caminar hacia arriba
+        if (!mapa.hayColision(hitBoxX, hitBoxY - velocidad)) {
+            sprite_del_personaje.move(0, -velocidad);
+        }
         sprite_del_personaje.setTexture(textura_arriba);
-        // Muestra el primer frame de esa textura (el recorte de 64x64 desde el inicio)
-        sprite_del_personaje.setTextureRect(sf::IntRect(0, 0, 64, 64));
-        // Restaura la escala normal por si venía espejado de moverse hacia la izquierda
-        sprite_del_personaje.setScale(1.f, 1.f);
-        // Restaura el origen al punto inicial del sprite (esquina superior izquierda)
-        sprite_del_personaje.setOrigin(0, 0);
     }
 
-    // S mueve hacia abajo y cambia la textura para que mire hacia abajo
+    // S - Abajo (Chequeamos el borde inferior de la caja de 16px: hitBoxY + 16)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        sprite_del_personaje.move(0, velocidad);
-        // Cambia la imagen del sprite a la textura de caminar hacia abajo
+        if (!mapa.hayColision(hitBoxX, hitBoxY + 16.f + velocidad)) {
+            sprite_del_personaje.move(0, velocidad);
+        }
         sprite_del_personaje.setTexture(textura_abajo);
-        // Muestra el primer frame de esa textura
-        sprite_del_personaje.setTextureRect(sf::IntRect(0, 0, 64, 64));
-        // Restaura la escala normal por si venía espejado de moverse hacia la izquierda
-        sprite_del_personaje.setScale(1.f, 1.f);
-        // Restaura el origen al punto inicial del sprite
-        sprite_del_personaje.setOrigin(0, 0);
     }
 
-    // D mueve hacia la derecha y cambia la textura para que mire a la derecha
+    // D - Derecha (Chequeamos el borde derecho de la caja de 16px: hitBoxX + 16)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        sprite_del_personaje.move(velocidad, 0);
-        // Cambia la imagen del sprite a la textura de caminar hacia la derecha
+        if (!mapa.hayColision(hitBoxX + 16.f + velocidad, hitBoxY)) {
+            sprite_del_personaje.move(velocidad, 0);
+        }
         sprite_del_personaje.setTexture(textura_derecha);
-        // Muestra el primer frame de esa textura
-        sprite_del_personaje.setTextureRect(sf::IntRect(0, 0, 64, 64));
-        // Restaura la escala normal por si venía espejado de moverse hacia la izquierda
         sprite_del_personaje.setScale(1.f, 1.f);
-        // Restaura el origen al punto inicial del sprite
         sprite_del_personaje.setOrigin(0, 0);
     }
 
-    // A mueve hacia la izquierda y espeja la textura de lado para que mire a la izquierda
+    // A - Izquierda
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        sprite_del_personaje.move(-velocidad, 0);
-        // Cambia la imagen del sprite a la textura de caminar hacia el lado
+        if (!mapa.hayColision(hitBoxX - velocidad, hitBoxY)) {
+            sprite_del_personaje.move(-velocidad, 0);
+        }
         sprite_del_personaje.setTexture(textura_izquierda);
-        // Muestra el primer frame de esa textura
-        sprite_del_personaje.setTextureRect(sf::IntRect(0, 0, 64, 64));
-        // setScale(-1, 1) espeja el sprite horizontalmente para que mire a la izquierda
-        // El -1 invierte el eje X (como ver la imagen en un espejo)
-        // El 1 deja el eje Y sin cambios
         sprite_del_personaje.setScale(-1.f, 1.f);
-        // Cuando se espeja el sprite, SFML dibuja desde el origen hacia la izquierda
-        // Si el origen queda en 0, el sprite se dibuja fuera de pantalla
-        // Mover el origen al borde derecho (64 píxeles) corrige eso
         sprite_del_personaje.setOrigin(64, 0);
     }
 }

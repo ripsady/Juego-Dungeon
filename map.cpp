@@ -91,7 +91,19 @@ bool Map::cargarMapa(const string& csvPath, const string& texturaPath) {
 	return true;
 } // <- Llave de cierre obligatoria de cargarMapa
 
+
 // =================================================================================================================================
+// FUNCIÓN PARA DIBUJAR EL MAPA COMPLETO EN LA PANTALLA
+// =================================================================================================================================
+void Map::dibujarMapa(sf::RenderWindow& ventana) {
+
+	// Simplemente dibuja el sprite de fondo gigante que ya configuramos en cargarMapa
+	ventana.draw(_spriteTile);
+
+}
+
+
+/*// =================================================================================================================================
 // FUNCIÓN PARA DIBUJAR EL MAPA COMPLETO EN LA PANTALLA
 // =================================================================================================================================
 void Map::dibujarMapa(sf::RenderWindow& ventana) {
@@ -130,6 +142,54 @@ void Map::dibujarMapa(sf::RenderWindow& ventana) {
 				// Ubicamos el sprite en sus coordenadas de pantalla y lo dibujamos
 				_spriteTile.setPosition(pantallaX, pantallaY);
 				ventana.draw(_spriteTile);
+			}
+		}
+	}
+}*/
+
+// =================================================================================================================================
+// EL SEGURIDAD DEL BOLICHE: El guardián que aplica el "NO es NO"
+// =================================================================================================================================
+bool Map::hayColision(float x, float y) {
+	// 1. EL TRADUCTOR DE COORDENADAS: Convertimos los píxeles reales de la pantalla (donde está parado el personaje)
+		// a las posiciones de las cajas (filas y columnas) de nuestro depósito de memoria.
+		// Como cada tile en la ventana se dibuja estirado por la escala, dividimos la posición por (_tamTile * _escala).
+	int columna = x / (_tamTile * _escala);
+	int fila = y / (_tamTile * _escala);
+
+	// 2. CONTROL DE FRONTERAS: Si el jugador intenta caminar hacia coordenadas negativas o se pasa del tamaño
+	// máximo de los estantes de nuestro depósito, el seguridad lo frena en seco para que no se caiga al vacío del fin del mundo.
+	if (fila < 0 || fila >= _filas || columna < 0 || columna >= _columnas) {
+		return true; // Hay colisión (Infranqueable)
+	}
+
+	// 3. LA INSPECCIÓN DE LA CELDA: Sacamos el número que está guardado en esa baldosa exacta
+	int tileID = mapa[fila][columna];
+
+	// Como vimos en tu Bloc de Notas, el -1 representa el suelo totalmente vacío (camino libre).
+	// El 0 (y cualquier número mayor) representa tus cajas rojas de Tiled: los troncos de los árboles, muros de hielo y bordes.
+	if (tileID >= 0) {
+		return true; // ¡NO es NO! Acá hay un obstáculo sólido.
+	}
+
+	return false; // El camino contiene un -1. ¡Pasá tranquilo, es suelo firme!
+}
+
+// =================================================================================================================================
+// FUNCION DEBUG PARA VER LAS COLISIONES: Dibuja un cuadrado rojo semitransparente sobre cada tile sólido para verificar que las colisiones estén bien ubicadas
+// =================================================================================================================================
+void Map::dibujarDebug(sf::RenderWindow& ventana) {
+	// Definimos un cuadrado de 16x16
+	sf::RectangleShape tileDebug(sf::Vector2f(16.f, 16.f));
+	tileDebug.setFillColor(sf::Color(255, 0, 0, 100)); // Rojo semitransparente
+
+	for (int y = 0; y < _filas; y++) {
+		for (int x = 0; x < _columnas; x++) {
+			// Si el valor NO es -1, es sólido
+			if (mapa[y][x] != -1) {
+				// Posicionamos el cuadrado de debug en la posición correcta (escalada x2)
+				tileDebug.setPosition(x * _tamTile * _escala, y * _tamTile * _escala);
+				ventana.draw(tileDebug);
 			}
 		}
 	}
