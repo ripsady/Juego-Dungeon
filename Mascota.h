@@ -5,9 +5,12 @@
 class Mascota {
 private:
     sf::Sprite sprite_mascota;      // Objeto que muestra la imagen de la mascota en pantalla
-    sf::Texture textura_mascota;    // Imagen cargada en memoria que usa el sprite
+    sf::Texture textura_abajo;      // Imagen cuando mira hacia abajo
+    sf::Texture textura_arriba;     // Imagen cuando mira hacia arriba
+    sf::Texture textura_derecha;    // Imagen cuando mira hacia la derecha
+    sf::Texture textura_izquierda;  // Imagen cuando mira hacia la izquierda
     float velocidad = 0.f;         // Cuántos píxeles se mueve por frame, empieza en 0
-    float distancia_minima = 0.f;  // A partir de qué distancia la mascota deja de seguir al personaje
+    float distancia_maxima = 0.f;  // A partir de qué distancia la mascota deja de seguir al personaje
 
 public:
     // Constructor: se ejecuta automáticamente al crear el objeto Mascota

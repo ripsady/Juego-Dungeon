@@ -5,7 +5,10 @@
 class Personaje {
 private:
     sf::Sprite sprite_del_personaje;    // Objeto que muestra la imagen del personaje en pantalla
-    sf::Texture textura_del_personaje;  // Imagen cargada en memoria que usa el sprite
+    sf::Texture textura_abajo;          // Imagen cuando mira hacia abajo
+    sf::Texture textura_arriba;         // Imagen cuando mira hacia arriba
+    sf::Texture textura_derecha;        // Imagen cuando mira hacia la derecha
+    sf::Texture textura_izquierda;      // Imagen cuando mira hacia la izquierda
     float velocidad = 0.f;              // Cuántos píxeles se mueve por frame, empieza en 0
 
 public:
