@@ -13,7 +13,8 @@ using namespace std;
 // =========================================
 enum GameState {
     MENU,
-    JUGANDO
+    JUGANDO,
+    CREDITOS,
 };
 
 int main() {
@@ -48,6 +49,61 @@ int main() {
 
     // Crea el objeto mascota (llama automáticamente al constructor de Mascota)
     Mascota mascota;
+
+    // CREACIÓN Y CONFIGURACIÓN DEL TEXTO DE CRÉDITOS
+    sf::Font font;
+    // Declara un objeto de tipo sf::Font
+    // Este objeto representa una fuente tipográfica que se utilizará para renderizar texto en pantalla
+
+    font.loadFromFile("assets/ariali.ttf");
+    // Carga la fuente desde un archivo externo (.ttf)
+    // Es obligatorio cargar una fuente antes de usarla en un sf::Text
+    // Si este archivo no existe o la ruta es incorrecta, el texto NO se mostrará
+
+    sf::Text creditosText;
+    // Declara un objeto de tipo sf::Text
+    // Este objeto representa un texto que puede ser dibujado en la ventana
+
+    creditosText.setFont(font);
+    // Asocia la fuente previamente cargada al objeto de texto
+    // Sin esta línea, SFML no sabría con qué tipografía renderizar el texto
+
+    creditosText.setString(
+        "CREDITOS\n\n"
+        "Desarrollado por:\n"
+        "Grupo 18 - Programacion 2\n"
+        "Turno noche | Comision 102 (Virtual)\n\n"
+
+        "Integrantes:\n"
+        "- Federico Wachenschwan\n"
+        "- Juan Corbacho\n"
+        "- Andres Ignacio Fernandez Escudero\n"
+        "- Miguel Salazar\n\n"
+
+        "Tipo de proyecto:\n"
+        "Juego\n\n"
+
+        "Descripcion:\n"
+        "Juego de supervivencia contra\n"
+        "oleadas de mobs con mejoras y logros."
+    );
+    // Define el contenido textual que se mostrará en pantalla
+    // Puede incluir saltos de línea usando "\n" si querés múltiples líneas
+
+    creditosText.setCharacterSize(30);
+    // Define el tamaño de los caracteres en píxeles
+    // A mayor valor, más grande se verá el texto en pantalla
+
+    creditosText.setFillColor(sf::Color::White);
+    // Establece el color del texto
+    // En este caso, blanco (RGB: 255,255,255)
+    // También podrías usar colores personalizados
+
+    creditosText.setPosition(150, 150);
+    // Define la posición del texto dentro de la ventana
+    // (150,150) significa:
+    // - 150 píxeles desde el borde izquierdo (eje X)
+    // - 150 píxeles desde el borde superior (eje Y)
 
     // =========================================
     // 3. BUCLE PRINCIPAL DEL JUEGO
@@ -89,10 +145,38 @@ int main() {
                             estado = JUGANDO;
                         }
 
+                        // Si seleccionamos "Creditos" Muestra la pantalla de los creditos
+                        if ( selected == 2 ) {
+							estado = CREDITOS;
+                        }
+
                         // Si seleccionó "Salir", cierra el juego
-                        if (selected == 4) {
+                        if (selected == 3) {
                             ventana.close();
                         }
+                    }
+                }
+            }
+
+            // CONTROL DE INPUT EN EL ESTADO "CREDITOS"
+            if (estado == CREDITOS) {
+                // Verifica si el juego se encuentra actualmente en el estado "CREDITOS"
+                // Es decir, si el usuario está visualizando la pantalla de créditos
+
+                if (evento.type == sf::Event::KeyPressed) {
+                    // Comprueba si el evento capturado corresponde a una tecla presionada
+                    // (KeyPressed se dispara UNA sola vez cuando se presiona la tecla)
+
+                    if (evento.key.code == sf::Keyboard::Escape) {
+                        // Verifica específicamente si la tecla presionada fue "ESCAPE"
+                        // Esta tecla se usa comúnmente como acción de "volver atrás" o "salir"
+
+                        estado = MENU;
+                        // Cambia el estado actual del juego a "MENU"
+                        // Esto provoca que:
+                        // - Se deje de mostrar la pantalla de créditos
+                        // - Se vuelva a renderizar el menú principal
+                        // - Se reactive la lógica de input del menú
                     }
                 }
             }
@@ -129,6 +213,20 @@ int main() {
 
             // Dibuja la mascota encima del mapa
             mascota.dibujar(ventana);
+        } else if ( estado == CREDITOS ) {
+            // Evalúa si el estado actual del juego es "CREDITOS"
+            // Este bloque se ejecuta únicamente cuando el usuario está en la pantalla de créditos
+
+            // Dibuja el objeto de texto que contiene la información de los créditos
+            // (nombre del juego, autores, etc.)
+            ventana.draw(creditosText);
+
+            // "creditosText" es un sf::Text previamente configurado (fuente, tamaño, posición, contenido)
+            // Este draw lo envía al buffer de render de la ventana, pero NO se muestra aún
+
+            // La visualización final ocurre cuando se llama a:
+            // ventana.display();
+            // al final del frame (doble buffering de SFML)
         }
 
         // Muestra en pantalla todo lo que se dibujó en este frame

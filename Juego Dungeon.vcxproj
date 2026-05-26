@@ -158,7 +158,9 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="Mascota.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="Personaje.cpp" />
     <ClCompile Include="skills.cpp" />
     <ClCompile Include="skill_1.cpp" />
     <ClCompile Include="skill_2.cpp" />
@@ -168,7 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map.h" />
+    <ClInclude Include="Mascota.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="Personaje.h" />
     <ClInclude Include="skills.h" />
     <ClInclude Include="skill_1.h" />
     <ClInclude Include="skill_2.h" />
