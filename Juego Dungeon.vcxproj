@@ -156,6 +156,8 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camara.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="Mascota.cpp" />
@@ -169,6 +171,8 @@
     <ClCompile Include="skill_5.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camara.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="Mascota.h" />
     <ClInclude Include="menu.h" />
