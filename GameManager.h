@@ -6,6 +6,7 @@
 #include "Mascota.h"
 #include "Camara.h"
 
+// Estados del juego
 enum GameState {
     MENU,
     JUGANDO,
@@ -14,9 +15,13 @@ enum GameState {
 
 class GameManager {
 private:
-    // Componentes principales de SFML
+    // Ventana principal
     sf::RenderWindow _ventana;
-	Camara _camara; // Cámara para seguir al personaje
+
+    // Cámara
+    Camara _camara;
+
+    // Estado actual del juego
     GameState _estado;
 
     // Objetos del juego
@@ -25,12 +30,16 @@ private:
     Personaje _personaje;
     Mascota _mascota;
 
-    // Métodos privados para las tres etapas del Game Loop
+    // 🔹 Elementos para pantalla de créditos
+    sf::Font _fontCreditos;   // Fuente del texto
+    sf::Text _textoCreditos;  // Texto a mostrar
+
+    // Métodos del Game Loop
     void procesarEventos();
     void actualizar();
     void renderizar();
 
 public:
-    GameManager(); // Constructor
-    void run();    // Arranca el bucle principal
+    GameManager();
+    void run();
 };
