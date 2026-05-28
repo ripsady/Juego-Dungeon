@@ -18,6 +18,14 @@ GameManager::GameManager()
         _ventana.close();
     }
 
+	// ================= SONIDO AMBIENTE =================
+	if (!_musicaAmbiente.openFromFile("assets/ambient.wav")) {
+		cout << "❌ Error cargando musica de ambiente" << endl;
+	}
+	else {
+		_musicaAmbiente.setLoop(true);
+	}
+
     // ================= CREDITOS =================
     // Carga de fuente (IMPORTANTE verificar ruta si falla)
     if (!_fontCreditos.loadFromFile("assets/NorthEternal-yYl4V.otf")) {
@@ -94,6 +102,8 @@ void GameManager::procesarEventos() {
                 if (evento.key.code == sf::Keyboard::Enter) {
                     int selected = _menu.getSelectedIndex();
 
+                    _musicaAmbiente.play();
+
                     if (selected == 0)
                         _estado = JUGANDO;
 
@@ -141,12 +151,12 @@ void GameManager::renderizar() {
     // ===== JUEGO =====
     else if (_estado == JUGANDO) {
         _ventana.setView(_camara.getVista());
-
         _mapa.dibujarMapa(_ventana);
         _mapa.dibujarDebug(_ventana);
 
         _personaje.dibujar(_ventana);
         _mascota.dibujar(_ventana);
+		_niebla.dibujar(_ventana, _camara.getVista());
     }
 
     // ===== CREDITOS =====

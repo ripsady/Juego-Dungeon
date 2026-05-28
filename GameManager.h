@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "map.h"
 #include "menu.h"
 #include "Personaje.h"
@@ -41,6 +42,8 @@ private:
     void procesarEventos();
     void actualizar();
     void renderizar();
+
+    sf::Music _musicaAmbiente;
 
 public:
     GameManager();

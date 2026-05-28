@@ -90,7 +90,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-audio.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\User\OneDrive\Escritorio\Juego-Dungeon\SFML\lib;$(ProjectDir)dependencias\SFML\lib</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
