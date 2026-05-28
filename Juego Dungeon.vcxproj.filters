@@ -15,6 +15,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Camara.cpp" />
     <ClCompile Include="Niebla.cpp" />
+    <ClCompile Include="Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Camara.h" />
     <ClInclude Include="Niebla.h" />
+    <ClInclude Include="Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="sonic2.png" />

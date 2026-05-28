@@ -31,7 +31,6 @@ bool hayColision(float x, float y);
 //Funcion para dibujar el mapa en la ventana
 
 void dibujarMapa(sf::RenderWindow& ventana);
-
 void dibujarDebug(sf::RenderWindow& ventana);
 
 };

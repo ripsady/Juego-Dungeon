@@ -7,6 +7,7 @@
 #include "Mascota.h"
 #include "Camara.h"
 #include "Niebla.h"
+#include "Enemy.h"
 
 // Estados del juego
 enum GameState {
@@ -33,6 +34,7 @@ private:
     Map _mapa;
     Personaje _personaje;
     Mascota _mascota;
+	Enemy _golem;
 
     // 🔹 Elementos para pantalla de créditos
     sf::Font _fontCreditos;   // Fuente del texto

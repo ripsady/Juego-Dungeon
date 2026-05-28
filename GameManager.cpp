@@ -4,13 +4,14 @@ using namespace std;
 
 // Constructor
 GameManager::GameManager()
-    : _ventana(sf::VideoMode(960, 640), "Daetherial - UTN"),
-    _camara(960.f, 640.f),
-    _estado(MENU),
-    _menu(960, 640),
-    _mapa(16, 1.0f)
+	: _ventana(sf::VideoMode(960, 640), "Daetherial - UTN"),
+	  _camara(960.f, 640.f),
+	  _estado(MENU),
+	  _menu(960, 640),
+	  _mapa(16, 1.0f),
+	  _golem(sf::Vector2f(500.f, 400.f)) // Posición inicial del Gólem
 {
-    _ventana.setFramerateLimit(60);
+	_ventana.setFramerateLimit(60);
 
     // ================= MAPA =================
     if (!_mapa.cargarMapa("assets/collisions_mapa_v1_background.csv", "assets/mapa_v1_background.png")) {
@@ -132,9 +133,11 @@ void GameManager::actualizar() {
     if (_estado == JUGANDO) {
         _camara.seguir(_personaje.getPosicion());
         _personaje.manejarInput(_mapa);
-        _mascota.seguir(_personaje.getPosicion());
-        // 🌟 Actualizás la niebla con el tiempo del frame
-        _niebla.actualizar(0.016f);
+		_mascota.seguir(_personaje.getPosicion());
+		_golem.actualizar(_personaje.getPosicion(), 0.016f); // Asumiendo 60 FPS, cada frame dura ~16ms
+
+		// 🌟 Actualizás la niebla con el tiempo del frame
+		_niebla.actualizar(0.016f);
     }
 }
 
@@ -154,9 +157,13 @@ void GameManager::renderizar() {
         _mapa.dibujarMapa(_ventana);
         _mapa.dibujarDebug(_ventana);
 
-        _personaje.dibujar(_ventana);
-        _mascota.dibujar(_ventana);
+		_personaje.dibujar(_ventana);
+		_mascota.dibujar(_ventana);
+		_golem.dibujar(_ventana);
+
+		//ULTIMA CAPA DE RENDERIZACION PARA QUE LA NIEBLA ESTE ENCIMA DE TODO
 		_niebla.dibujar(_ventana, _camara.getVista());
+     
     }
 
     // ===== CREDITOS =====
