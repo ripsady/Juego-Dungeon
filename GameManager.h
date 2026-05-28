@@ -5,6 +5,7 @@
 #include "Personaje.h"
 #include "Mascota.h"
 #include "Camara.h"
+#include "Niebla.h"
 
 // Estados del juego
 enum GameState {
@@ -23,6 +24,8 @@ private:
 
     // Estado actual del juego
     GameState _estado;
+	Niebla _niebla; // Capa de niebla para el efecto visual
+	sf::Clock _reloj; // Reloj para medir el tiempo entre frames
 
     // Objetos del juego
     Menu _menu;

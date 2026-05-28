@@ -59,7 +59,7 @@ GameManager::GameManager()
 
 // Bucle principal
 void GameManager::run() {
-    while (_ventana.isOpen()) {
+    while (_ventana.isOpen()){ 
         procesarEventos();
         actualizar();
         renderizar();
@@ -123,6 +123,8 @@ void GameManager::actualizar() {
         _camara.seguir(_personaje.getPosicion());
         _personaje.manejarInput(_mapa);
         _mascota.seguir(_personaje.getPosicion());
+        // 🌟 Actualizás la niebla con el tiempo del frame
+        _niebla.actualizar(0.016f);
     }
 }
 
@@ -145,7 +147,7 @@ void GameManager::renderizar() {
 
         _personaje.dibujar(_ventana);
         _mascota.dibujar(_ventana);
-    }
+
 
     // ===== CREDITOS =====
     else if (_estado == CREDITOS) {

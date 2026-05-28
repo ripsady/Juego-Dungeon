@@ -87,9 +87,8 @@ bool Map::cargarMapa(const string& csvPath, const string& texturaPath) {
 	}
 
 
-
 	return true;
-} // <- Llave de cierre obligatoria de cargarMapa
+}
 
 
 // =================================================================================================================================
