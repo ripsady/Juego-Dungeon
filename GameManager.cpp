@@ -147,7 +147,7 @@ void GameManager::renderizar() {
 
         _personaje.dibujar(_ventana);
         _mascota.dibujar(_ventana);
-
+    }
 
     // ===== CREDITOS =====
     else if (_estado == CREDITOS) {

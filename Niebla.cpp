@@ -1,4 +1,5 @@
 #include "Niebla.h"
+#include "cmath"
 
 Niebla::Niebla() {
     if (_textura.loadFromFile("assets/fog.png")) {
