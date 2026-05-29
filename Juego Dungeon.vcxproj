@@ -157,13 +157,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camara.cpp" />
+    <ClCompile Include="Colisionable.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Inventario.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="Mascota.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="Niebla.cpp" />
+    <ClCompile Include="ObjectsManager.cpp" />
     <ClCompile Include="Personaje.cpp" />
     <ClCompile Include="skills.cpp" />
     <ClCompile Include="skill_1.cpp" />
@@ -174,12 +179,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camara.h" />
+    <ClInclude Include="Colisionable.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Inventario.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="Mascota.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="Niebla.h" />
+    <ClInclude Include="ObjectsManager.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="skills.h" />
     <ClInclude Include="skill_1.h" />

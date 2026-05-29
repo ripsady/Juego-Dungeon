@@ -16,6 +16,11 @@
     <ClCompile Include="Camara.cpp" />
     <ClCompile Include="Niebla.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Colisionable.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Inventario.cpp" />
+    <ClCompile Include="ObjectsManager.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map.h" />
@@ -32,6 +37,11 @@
     <ClInclude Include="Camara.h" />
     <ClInclude Include="Niebla.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Colisionable.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Inventario.h" />
+    <ClInclude Include="ObjectsManager.h" />
+    <ClInclude Include="ItemManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="sonic2.png" />

@@ -42,54 +42,70 @@ Personaje::Personaje() {
 
 // Lee las teclas W, A, S, D, cambia la textura según la dirección y mueve el personaje
 void Personaje::manejarInput(Map& mapa) {
+    sf::Vector2f movimiento(0.f, 0.f);
 
-    // 1. Obtenemos la posición actual
-    sf::Vector2f posActual = sprite_del_personaje.getPosition();
-
-    // 2. NUEVA LÓGICA DE HITBOX (16x16)
-    // Centramos la caja de 16px en la base del personaje (donde están los pies)
-    // Asumimos que el personaje visual está en (posActual.x, posActual.y)
-    // Offset X: (64 - 16) / 2 = 24. Esto centra la caja de 16px en el ancho del sprite de 64px
-    // Offset Y: 48. Esto posiciona la caja en la parte inferior (pies)
-
-    float hitBoxX = posActual.x + 24.f;
-    float hitBoxY = posActual.y + 24.f;
-
-
-    // W - Arriba
+    // 1. CAPTURAMOS EL INPUT Y CONFIGURAMOS TEXTURAS / GIROS FIRST
+    // Hacemos esto primero para que getGlobalBounds() se actualice con la dirección correcta
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        if (!mapa.hayColision(hitBoxX, hitBoxY - velocidad)) {
-            sprite_del_personaje.move(0, -velocidad);
-        }
+        movimiento.y -= velocidad;
         sprite_del_personaje.setTexture(textura_arriba);
     }
-
-    // S - Abajo (Chequeamos el borde inferior de la caja de 16px: hitBoxY + 16)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        if (!mapa.hayColision(hitBoxX, hitBoxY + 16.f + velocidad)) {
-            sprite_del_personaje.move(0, velocidad);
-        }
+        movimiento.y += velocidad;
         sprite_del_personaje.setTexture(textura_abajo);
     }
-
-    // D - Derecha (Chequeamos el borde derecho de la caja de 16px: hitBoxX + 16)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        if (!mapa.hayColision(hitBoxX + 16.f + velocidad, hitBoxY)) {
-            sprite_del_personaje.move(velocidad, 0);
-        }
+        movimiento.x += velocidad;
         sprite_del_personaje.setTexture(textura_derecha);
         sprite_del_personaje.setScale(1.f, 1.f);
         sprite_del_personaje.setOrigin(0, 0);
     }
-
-    // A - Izquierda
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        if (!mapa.hayColision(hitBoxX - velocidad, hitBoxY)) {
-            sprite_del_personaje.move(-velocidad, 0);
-        }
+        movimiento.x -= velocidad;
         sprite_del_personaje.setTexture(textura_izquierda);
         sprite_del_personaje.setScale(-1.f, 1.f);
         sprite_del_personaje.setOrigin(64, 0);
+    }
+
+    // =================================================================================================================================
+    // 2. RESOLUCIÓN DE COLISIONES POR EJES SEPARADOS (ADIÓS CLIPPING)
+    // =================================================================================================================================
+
+    // --- EJE X (Horizontal) ---
+    if (movimiento.x != 0.f) {
+        sprite_del_personaje.move(movimiento.x, 0.f); // Damos el paso fantasma en X
+
+        // Chequeamos si el rectángulo completo choca contra alguna pared del mapa
+        bool chocoX = false;
+        for (const auto& bloque : mapa.getBloquesSolidos()) {
+            if (this->chequearColision(bloque)) {
+                chocoX = true;
+                break;
+            }
+        }
+
+        // Si la caja entera colisionó, lo obligamos a retroceder el paso en X
+        if (chocoX) {
+            sprite_del_personaje.move(-movimiento.x, 0.f);
+        }
+    }
+
+    // --- EJE Y (Vertical) ---
+    if (movimiento.y != 0.f) {
+        sprite_del_personaje.move(0.f, movimiento.y); // Damos el paso fantasma en Y
+
+        bool chocoY = false;
+        for (const auto& bloque : mapa.getBloquesSolidos()) {
+            if (this->chequearColision(bloque)) {
+                chocoY = true;
+                break;
+            }
+        }
+
+        // Si la caja entera colisionó, lo obligamos a retroceder el paso en Y
+        if (chocoY) {
+            sprite_del_personaje.move(0.f, -movimiento.y);
+        }
     }
 }
 
@@ -101,4 +117,22 @@ sf::Vector2f Personaje::getPosicion() {
 // Dibuja el sprite del personaje en la ventana
 void Personaje::dibujar(sf::RenderWindow& ventana) {
     ventana.draw(sprite_del_personaje);
+}
+
+// Función de debug para dibujar la hitbox real del personaje (caja 16x16) en verde con opacidad
+void Personaje::dibujarDebug(sf::RenderWindow& ventana) {
+    // 1. Le pedimos a nuestro propio método los límites reales del sprite (AABB)
+    sf::FloatRect limites = this->getBounds();
+
+    // 2. Creamos el rectángulo con el tamaño exacto de la hitbox
+    sf::RectangleShape rectDebug(sf::Vector2f(limites.width, limites.height));
+    rectDebug.setPosition(limites.left, limites.top);
+
+    // 3. Le damos facha de Debug: Verde con 100 de opacidad (el máximo es 255)
+    rectDebug.setFillColor(sf::Color(0, 255, 0, 100));
+    rectDebug.setOutlineColor(sf::Color::Green);
+    rectDebug.setOutlineThickness(-1.f); // Un borde finito para que se note el límite exacto
+
+    // 4. Lo mandamos a la pantalla
+    ventana.draw(rectDebug);
 }
