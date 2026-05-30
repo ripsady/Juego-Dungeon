@@ -15,15 +15,15 @@ private:
     sf::Texture textura_derecha;        // Imagen cuando mira hacia la derecha
     sf::Texture textura_izquierda;      // Imagen cuando mira hacia la izquierda
     float velocidad = 0.f;              // Cuántos píxeles se mueve por frame, empieza en 0
-    Inventario _mochila;                // Mochila del personaje
+    Inventario _inventario;                // Inventario del personaje
 	habilidad_1 primeraHabilidad;       // Primera habilidad del personaje
 public:
     // Constructor: se ejecuta automáticamente al crear el objeto Personaje
     Personaje();
 
     // Acceso a la mochila del personaje
-    Inventario& getMochila() { return _mochila; }
-    const Inventario& getMochila() const { return _mochila; }
+    Inventario& getInventario() { return _inventario; }
+    const Inventario& getInventario() const { return _inventario; }
 
     // FEDE AGREGO ESTAS FUNCIONES PARA QUE EL PERSONAJE PUEDA COMUNICARSE CON EL MAPA Y POR LO TANTO PUEDA COLISIONAR
     // 🛡️ El personaje ahora recibe el mapa por referencia para poder colisionar ("NO es NO")
@@ -49,6 +49,9 @@ public:
         float hitboxY = pos.y + 48.f; // base del sprite
         return sf::FloatRect(hitboxX, hitboxY, 16.f, 16.f);
     }
+
+    // 🌟 DEBUG: Para centrar el sprite con la hitbox en caliente
+    void ajustarOrigenSprite(float x, float y);
 
     void actualizarHabilidades(float dt);
 };

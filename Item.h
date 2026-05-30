@@ -51,6 +51,7 @@ public:
     int getCantidad() const { return _cantidad; }
     int getMaxStack() const { return _maxStack; }
     void setCantidad(int cantidad) { _cantidad = cantidad; }
+	sf::Sprite getSprite() const { return _sprite; } // Devuelve el sprite para renderizarlo en el inventario UI
 
 }; // 🌟 ACÁ TERMINA LA CLASE ITEM
 

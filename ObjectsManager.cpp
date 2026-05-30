@@ -31,7 +31,7 @@ void ObjectsManager::chequearInteracciones(Personaje& jugador) {
                 // CASO A: Es un ítem del piso (Poción, Madera, Oro)
                 if (itemActual->esAgarrable()) {
                     // Intentamos meterlo en la mochila del personaje
-                    if (jugador.getMochila().agarrarItem(itemActual)) {
+                    if (jugador.getInventario().agarrarItem(itemActual)) {
                         std::cout << "🎒 Guardaste en la mochila: " << itemActual->getNombre() << std::endl;
                         _itemsEnMundo.erase(_itemsEnMundo.begin() + i); // Desaparece del mapa
                     }

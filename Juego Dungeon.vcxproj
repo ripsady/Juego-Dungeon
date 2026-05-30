@@ -73,6 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(ProjectDir)SFML\lib;$(LibraryPath)</LibraryPath>
+    <PublicIncludeDirectories>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-audio.lib;</PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="Camara.cpp" />
     <ClCompile Include="Colisionable.cpp" />
+    <ClCompile Include="DebugManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Inventario.cpp" />
@@ -866,13 +868,9 @@
     <Media Include="assets\ambient.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="assets\ariali.ttf" />
     <Font Include="assets\NorthEternal-yYl4V.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>
-
-
-

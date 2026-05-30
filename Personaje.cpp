@@ -1,4 +1,5 @@
 #include "Personaje.h"
+#include <iostream>
 
 // Constructor: prepara el personaje antes de que empiece el juego
 Personaje::Personaje() {
@@ -58,13 +59,13 @@ void Personaje::manejarInput(Map& mapa, sf::RenderWindow& ventana) {
         movimiento.x += velocidad;
         sprite_del_personaje.setTexture(textura_derecha);
         sprite_del_personaje.setScale(1.f, 1.f);
-        sprite_del_personaje.setOrigin(0, 0);
+        sprite_del_personaje.setOrigin(0, -15);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         movimiento.x -= velocidad;
         sprite_del_personaje.setTexture(textura_izquierda);
         sprite_del_personaje.setScale(-1.f, 1.f);
-        sprite_del_personaje.setOrigin(64, 0);
+        sprite_del_personaje.setOrigin(64, -15);
     }
 
     // =================================================================================================================================
@@ -157,4 +158,14 @@ void Personaje::dibujarDebug(sf::RenderWindow& ventana) {
 
     // 4. Lo mandamos a la pantalla
     ventana.draw(rectDebug);
+}
+
+void Personaje::ajustarOrigenSprite(float x, float y) {
+    sf::Vector2f origenActual = sprite_del_personaje.getOrigin();
+
+    float nuevoX = origenActual.x + x;
+    float nuevoY = origenActual.y + y;
+    sprite_del_personaje.setOrigin(nuevoX, nuevoY);
+
+    std::cout << "🧍 Personaje Origen -> X: " << nuevoX << " | Y: " << nuevoY << std::endl;
 }

@@ -11,6 +11,8 @@
 #include "Enemy.h"
 #include "ItemManager.h"    // 🌟 Nuevo: La fábrica de ítems
 #include "ObjectsManager.h" // 🌟 Nuevo: Para manejar el mapa
+#include "UI_Inventario.h"  // 🌟 Nuevo: La interfaz del inventario
+#include "DebugManager.h"   // 🌟 Nuevo: Para activar el modo debug y mover cosas en caliente
 
 // Estados del juego
 enum GameState {
@@ -21,6 +23,9 @@ enum GameState {
 
 class GameManager {
 private:
+	// Debug Manager para controlar el modo debug y mover cosas en caliente
+    DebugManager _debug;
+    
     // Ventana principal
     sf::RenderWindow _ventana;
 
@@ -33,6 +38,7 @@ private:
 	sf::Clock _reloj; // Reloj para medir el tiempo entre frames
 
     // Objetos del juego
+    UI_Inventario _hudInventario;
     Menu _menu;
     Map _mapa;
     Personaje _personaje;
@@ -53,9 +59,15 @@ private:
     void renderizar();
    
 	// Funcion intermediaria para spawnear un ítem de forma segura (sin colisionar con el personaje, mapa u otros objetos)
-    void spawnearDropSeguro(Item* item, sf::Texture& textura, float x, float y);
+    // 🌟 Nuestro nuevo método de Rejection Sampling para loot
+    void spawnearDropSeguro(Item* item, const sf::Texture& textura, float startX, float startY);
+
+	// Función para cambiar la música de ambiente según el estado del juego (opcional pero recomendado para mejorar la inmersión)
+    void cambiarMusica(GameState nuevoEstado);
 
     sf::Music _musicaAmbiente;
+
+
 
 public:
     GameManager();
