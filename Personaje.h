@@ -3,6 +3,7 @@
 #include "map.h"
 #include "Colisionable.h" // 🌟 1. Incluimos el contrato de colisiones
 #include "Inventario.h"
+#include "habilidad_1.h"
 
 // Clase que representa al personaje controlado por el jugador
 // 🌟 2. Hacemos que herede de Colisionable de forma pública
@@ -15,7 +16,7 @@ private:
     sf::Texture textura_izquierda;      // Imagen cuando mira hacia la izquierda
     float velocidad = 0.f;              // Cuántos píxeles se mueve por frame, empieza en 0
     Inventario _mochila;                // Mochila del personaje
-
+	habilidad_1 primeraHabilidad;       // Primera habilidad del personaje
 public:
     // Constructor: se ejecuta automáticamente al crear el objeto Personaje
     Personaje();
@@ -26,7 +27,7 @@ public:
 
     // FEDE AGREGO ESTAS FUNCIONES PARA QUE EL PERSONAJE PUEDA COMUNICARSE CON EL MAPA Y POR LO TANTO PUEDA COLISIONAR
     // 🛡️ El personaje ahora recibe el mapa por referencia para poder colisionar ("NO es NO")
-    void manejarInput(Map& mapa);
+    void manejarInput(Map& mapa, sf::RenderWindow& ventana);
 
     // Devuelve las coordenadas X e Y actuales del personaje
     sf::Vector2f getPosicion();
@@ -48,4 +49,6 @@ public:
         float hitboxY = pos.y + 48.f; // base del sprite
         return sf::FloatRect(hitboxX, hitboxY, 16.f, 16.f);
     }
+
+    void actualizarHabilidades(float dt);
 };

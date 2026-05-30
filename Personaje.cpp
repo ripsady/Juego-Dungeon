@@ -41,7 +41,7 @@ Personaje::Personaje() {
 }
 
 // Lee las teclas W, A, S, D, cambia la textura según la dirección y mueve el personaje
-void Personaje::manejarInput(Map& mapa) {
+void Personaje::manejarInput(Map& mapa, sf::RenderWindow& ventana) {
     sf::Vector2f movimiento(0.f, 0.f);
 
     // 1. CAPTURAMOS EL INPUT Y CONFIGURAMOS TEXTURAS / GIROS FIRST
@@ -107,16 +107,38 @@ void Personaje::manejarInput(Map& mapa) {
             sprite_del_personaje.move(0.f, -movimiento.y);
         }
     }
+
+    // 3. NACHO - Tecla de acción (Espacio) para lanzar habilidad 1
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
+    {
+		sf::Vector2f posicionPersonaje = getPosicion();
+        sf::Vector2i mousePantalla = sf::Mouse::getPosition(ventana);
+		sf::Vector2f mouseMundo = ventana.mapPixelToCoords(mousePantalla);
+        // Llamada para activar la primera habilidad (Bola de fuego)
+        // - activa: posiciona el sprite, calcula la dirección y dispara el cooldown
+        // - NO mueve el proyectil en este momento; el movimiento ocurre en actualizar(dt)
+        primeraHabilidad.activar(posicionPersonaje, mouseMundo);
+    }
 }
 
-// Devuelve la posición actual del personaje como par de coordenadas X e Y
+// NACHO - Actualiza las habilidades del personaje
+void Personaje::actualizarHabilidades(float dt) 
+{
+    //  llamamos al método actualizar(dt) de la habilidad
+    //  - Esto actualiza el cooldown (cdActualizar), mueve el proyectil si está activo
+    //  - y desactiva el proyectil cuando alcanza su rango
+    primeraHabilidad.actualizar(dt);
+}
+
+// NACHO - Devuelve la posición actual del personaje como par de coordenadas X e Y
 sf::Vector2f Personaje::getPosicion() {
     return sprite_del_personaje.getPosition();
 }
 
-// Dibuja el sprite del personaje en la ventana
+// NACHO - Dibuja el sprite del personaje en la ventana
 void Personaje::dibujar(sf::RenderWindow& ventana) {
     ventana.draw(sprite_del_personaje);
+	primeraHabilidad.dibujar(ventana);
 }
 
 // Función de debug para dibujar la hitbox real del personaje (caja 16x16) en verde con opacidad

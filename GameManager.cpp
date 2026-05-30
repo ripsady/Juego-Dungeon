@@ -148,7 +148,8 @@ void GameManager::actualizar() {
 		float dt = _reloj.restart().asSeconds(); // Tiempo del frame en segundos
 
         _camara.seguir(_personaje.getPosicion());
-        _personaje.manejarInput(_mapa);
+		_personaje.manejarInput(_mapa, _ventana);
+		_personaje.actualizarHabilidades(dt); // NACHO - Actualizamos las habilidades del personaje (cooldowns y movimiento de proyectiles)
 		_mascota.seguir(_personaje.getPosicion());
         _golem.actualizar(_personaje.getPosicion(), dt);
 		_niebla.actualizar(dt);
